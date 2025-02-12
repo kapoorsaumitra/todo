@@ -1,34 +1,43 @@
 <head></head>
 <body>
-    <h1>todo list</h1>
-    <input id ="task" placeholder="type todo">
-    <button onclick="addTodo()">add todo</button>
-    <div id="todos"></div>
-</body>
-<script>
-    let index = 1
-    function addTodo(){
-        const div = document.createElement("div");
-        div.setAttribute("id","todo-"+index)
-        //create todo
-        const todo = index + '. ' + document.querySelector("#task").value
-        const delbtn = document.createElement("button")
-        delbtn.textContent = "Delete Todo"
-        delbtn.setAttribute("onclick","deleteTodo("+index+")")
-        //add content
-        div.innerHTML = todo
-        div.appendChild(delbtn)
-        //add todo to todos
-        const parent = document.querySelector("#todos")
-        parent.appendChild(div)
-        index++
+  <input type="text" />
+  <button onclick="addTodo()">Add todo!</button>
+  <div id="todolist"></div>
+  <script>
+    let todos = [];
+
+    function addTodo() {
+      todos.push({
+        title: document.querySelector("input").value,
+      });
+      // console.log(document.querySelector("input").value);
+      render();
     }
 
-    function deleteTodo(x){
-        //select todo
-        const todos = document.querySelector("#todos")
-        const todo = todos.querySelector("#todo-"+x)
-        todos.removeChild(todo)
-        
+    function deleteTodo(x) {
+      todos.splice(x, 1);
+      render();
     }
-</script>
+
+    function render() {
+      let page = document.querySelector("#todolist");
+      page.innerHTML = "";
+      // document.body.innerHTML = "";
+
+      let listoftodos = document.createElement("div");
+      for (let i = 0; i < todos.length; i++) {
+        const todoObj = todos[i];
+        const todo = document.createElement("div");
+        todo.textContent = i + 1 + ". " + todoObj["title"];
+
+        const delbtn = document.createElement("button");
+        delbtn.setAttribute("onclick", "deleteTodo(" + i + ")");
+        delbtn.textContent = "Delete Todo";
+
+        todo.appendChild(delbtn);
+        listoftodos.appendChild(todo);
+      }
+      page.appendChild(listoftodos);
+    }
+  </script>
+</body>
